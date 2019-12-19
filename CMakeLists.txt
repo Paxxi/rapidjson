@@ -16,11 +16,6 @@ set(LIB_MINOR_VERSION "1")
 set(LIB_PATCH_VERSION "0")
 set(LIB_VERSION_STRING "${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION}.${LIB_PATCH_VERSION}")
 
-# compile in release with debug info mode by default
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE)
-endif()
-
 # Build all binaries in a separate directory
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
@@ -137,14 +132,11 @@ IF (UNIX OR CYGWIN)
       COMPONENT pkgconfig)
 ENDIF()
 
-install(FILES readme.md
-        DESTINATION "${DOC_INSTALL_DIR}"
-        COMPONENT doc)
-
 install(DIRECTORY include/rapidjson
     DESTINATION "${INCLUDE_INSTALL_DIR}"
     COMPONENT dev)
 
+if(RAPIDJSON_BUILD_EXAMPLES)
 install(DIRECTORY example/
     DESTINATION "${DOC_INSTALL_DIR}/examples"
     COMPONENT examples
@@ -153,6 +145,7 @@ install(DIRECTORY example/
     PATTERN "CMakeFiles" EXCLUDE
     PATTERN "Makefile" EXCLUDE
     PATTERN "cmake_install.cmake" EXCLUDE)
+endif()
 
 # Provide config and version files to be used by other applications
 # ===============================
